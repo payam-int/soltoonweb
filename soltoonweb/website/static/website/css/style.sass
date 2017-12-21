@@ -1,0 +1,330 @@
+html, body
+  padding: 0
+  margin: 0
+
+body
+  background: #f5f5f5
+  //background: #f6f7f8
+  direction: rtl
+  font: 12pt "Samim", Arial
+
+.container
+  width: 1140px
+  margin: 0 auto
+
+#header
+  margin: 24px auto
+
+  #not-mobile-header
+    display: flex
+  #logo
+    img
+      height: 96px
+  .menu
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: flex-end
+    margin: 0
+    -webkit-margin-before: 0px
+    -webkit-margin-after: 0px
+    -webkit-padding-start: 0px
+    li
+      list-style-type: none
+      display: block
+      padding: 0 36px 36px 36px
+      text-align: center
+      a
+        color: #888d92
+        font-size: 1.1rem
+        font-weight: bold
+        text-decoration: none
+        -webkit-transition: color 500ms
+        -moz-transition: color 500ms
+        -ms-transition: color 500ms
+        -o-transition: color 500ms
+        transition: color 500ms
+        &:hover
+          color: #222
+        &.disabled
+          color: #aaa
+
+#banner
+  height: 456px
+  background: #D8D6DB
+  overflow: hidden
+  position: relative
+  .competition-banner
+    .player1-picture
+      background: url("../img/player1.svg") no-repeat center top
+      background-size: cover
+      width: 300px
+      height: 73%
+      right: 24px
+      position: absolute
+      bottom: 0
+
+    .player2-picture
+      background: url("../img/player2.svg") no-repeat center top
+      background-size: cover
+      width: 300px
+      height: 336px
+      left: 24px
+      position: absolute
+      bottom: 0
+
+    .player1-title, .player2-title
+      font-size: 2.4rem
+      font-weight: bold
+      color: #595a5f
+      position: absolute
+      width: 408px
+      cursor: default
+    //text-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.2)
+    //text-shadow: 1px 0px 1px #999
+
+    .player1-title
+      border-right: 6px solid #263542
+      padding-right: 24px
+      right: 50%
+      margin-right: -200px
+      top: 120px
+
+    .player2-title
+      left: 50%
+      top: 240px
+      margin-left: -200px
+      border-left: 6px solid #C40048
+      padding-left: 24px
+      text-align: left
+
+    .against
+      position: absolute
+      top: 198px
+      left: 50%
+      width: 192px
+      text-align: center
+      margin-left: -96px
+      font-size: 1.5rem
+      font-weight: bold
+      color: #EB4E54
+      transform: rotate(90deg)
+      cursor: default
+
+    .game-type
+      position: absolute
+      left: 50%
+      width: 168px
+      margin-left: -36px
+      text-align: center
+      line-height: 48px
+      bottom: 48px
+      height: 72px
+      box-sizing: border-box
+      background: #F7FFF7
+      border-radius: 36px
+      padding: 12px 24px
+      font-weight: bold
+      color: #666
+
+    .banner-button
+      position: absolute
+      bottom: 48px
+      height: 72px
+      width: 72px
+      text-align: center
+      color: #EB4E54
+      font-size: 72px
+      left: 50%
+      margin-left: -132px
+      cursor: pointer
+      border-radius: 10000000000px
+      svg
+        vertical-align: 0
+        display: block
+      &:hover
+        color: #eb3d47
+
+#front-blocks
+  display: flex
+  .block
+    width: 33%
+    height: 240px
+    //border: 1px solid #EADDDF
+    border-radius: 0 0 2px 2px
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1)
+    background: #fff
+    //background: linear-gradient(0deg, #E2E1E4 0%, #DBD9DE 100%)
+    margin: 24px 0 0 12px
+    box-sizing: border-box
+    padding: 24px 0 0 0
+    .block-image
+      font-size: 72px
+      color: #EB4E54
+      text-align: center
+      margin: 12px 0 0 0
+    .block-link
+      text-align: center
+      a
+        text-decoration: none
+        font-weight: bold
+        color: #3a393c
+        font-size: 1.2rem
+    .block-text
+      padding: 12px 24px
+      text-align: center
+      color: #666
+
+  #front-left-block
+    margin-left: 0
+
+//background: linear-gradient(45deg, #D1BEC2 0%, #D6E1D5 100%)
+
+#front-content
+  display: flex
+  flex-direction: row
+  flex-wrap: wrap
+  align-content: flex-start
+  margin-top: 48px
+  background: #ececec
+  min-height: 360px
+  padding: 48px 0
+  #front-content-text
+    font-size: 1.1rem
+    line-height: 30px
+    padding: 0 72px
+    box-sizing: border-box
+    h1
+      line-height: 60px
+      margin: 48px 0 24px 0
+      color: #595a5f
+      cursor: default
+    p
+      text-indent: 24px
+      color: #555
+
+.page-container
+  background: #fafafa
+  margin: 48px 0 0 0
+  padding: 48px 0
+  box-sizing: border-box
+
+.page
+  &.with-sidebar
+    display: flex
+    flex-direction: row
+    .sidebar
+      width: 30%
+      margin: 0 0 0 48px
+      .block
+        border-radius: 2px
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1)
+        background: #fff
+        padding: 12px 24px 24px 24px
+        h1, h2
+          margin: 0 0 36px 0
+          color: #46474b
+    .page-content
+      width: 70%
+      padding: 0 24px 24px 24px
+      color: #333
+      h1, h2, h3, h4, h5, h6
+        margin: 0 0 24px 0
+        color: #595a5f
+      h2
+        font-size: 1.6rem
+      p
+        text-indent: 24px
+        line-height: 30px
+
+input
+  background-position: 4% 50% !important
+
+#login-block
+
+  .field
+    margin: 0 0 12px 0
+  .submit
+    margin: 36px 0 0 0
+
+#footer
+  text-align: left
+  font-size: 0.8rem
+  color: #666
+  padding: 24px 0 48px 0
+  //border-top: 2px solid #D6E1D5
+  //padding-top: 12px
+  span
+    font-weight: bold
+
+.hide-except
+  visibility: hidden
+  display: none
+
+.mobile
+  visibility: hidden
+
+.large-screen
+  visibility: visible
+  display: block
+
+.small-screen
+  visibility: hidden
+
+@media screen and (max-width: 768px)
+  .mobile
+    visibility: visible
+    display: block
+  .not-mobile
+    visibility: hidden
+    display: none !important
+  .container
+    width: 100%
+  .mobile-vertical-flex
+    flex-direction: column
+  .mobile-full-width
+    width: 100% !important
+
+  #mobile-header
+    padding: 0 24px
+    #logo
+      img
+        height: 60px
+  #front-blocks
+    box-sizing: border-box
+    padding: 0 24px
+    margin: 24px 0 0 0
+    .block
+      height: 196px
+      margin: 12px 0
+      box-sizing: border-box
+      padding: 12px 0 0 0
+  #front-content
+    #front-content-text
+      padding: 0 36px
+    h1
+      font-size: 1.7rem
+
+  #banner
+    .competition-banner
+      .player-title
+        width: 360px
+      .player-picture
+        height: 60%
+      .player1-picture
+        right: -100px
+      .player2-picture
+        left: -100px
+      .player1-title
+        top: 48px
+        font-size: 1.8rem
+        margin-right: -170px
+      .against
+        top: 90px
+      .player2-title
+        top: 120px
+        font-size: 1.8rem
+        text-align: left
+        margin-left: -170px
+  #footer
+    text-align: center
