@@ -139,4 +139,4 @@ WAGTAIL_SITE_NAME = 'My Example Site'
 
 MAX_CODE_SIZE = 1024 * 1024 * 10
 
-settings.LOGIN_URL = 'login/'
+LOGIN_URL = 'login/'
