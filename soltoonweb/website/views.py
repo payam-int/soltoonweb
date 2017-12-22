@@ -35,7 +35,7 @@ class Game(TemplateView):
     template_name = 'website/game.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(Game, self).get_context_data(**kwargs)
 
         context['user'] = self.request.user
         context['upload_code'] = {
