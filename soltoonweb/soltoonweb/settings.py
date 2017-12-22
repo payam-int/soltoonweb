@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'wagtail.wagtailadmin',
     'wagtail.wagtailcore',
 
+    'semanticuiforms',
     'modelcluster',
     'taggit',
     'sandbox',
@@ -135,3 +136,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 WAGTAIL_SITE_NAME = 'My Example Site'
+
+MAX_CODE_SIZE = 1024 * 1024 * 10

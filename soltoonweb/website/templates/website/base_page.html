@@ -55,7 +55,8 @@
             src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
-    <script src="{% static 'lib/semantic/dist/semantic.min.js' %}"></script>
+    <script src="{% static 'website/lib/semantic/dist/semantic.min.js' %}"></script>
+    <script>$('.ui.dropdown').dropdown();</script>
     {% block page_footer_javascript %}{% endblock %}
 {% endblock footer_javascript %}
 </body>

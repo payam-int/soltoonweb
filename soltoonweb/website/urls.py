@@ -8,6 +8,10 @@ urlpatterns = [
         name='soltoonwebsite_home'),
     url(r'^login/', views.Login.as_view(),
         name='soltoonwebsite_login'),
-    url(r'^game/', views.Game.as_view(),
+    url(r'^game/$', views.Game.as_view(),
         name='soltoonwebsite_game'),
+    url(r'^game/code/upload$', views.upload_code,
+        name='soltoonwebsite_uploadcode'),
+    url(r'^game/register$', views.RegisterGame.as_view(),
+        name='soltoonwebsite_registergame'),
 ]

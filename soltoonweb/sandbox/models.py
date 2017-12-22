@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext as _
+import os
 
 
 # Create your models here.
@@ -28,11 +30,21 @@ class Code(models.Model):
         ('RAR', ".rar"),
     )
 
-    file = models.FileField(verbose_name=_("file"), upload_to='userfiles/')
+    file = models.FileField(verbose_name=_("file"), upload_to='private_media/codes/',
+                            validators=[FileExtensionValidator(['zip', 'rar', 'tar.gz'])], )
     file_type = models.CharField(verbose_name=_("file type"), choices=file_types, max_length=5)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, editable=False)
-    status = models.IntegerField(verbose_name=_("status"), choices=code_status)
+    status = models.IntegerField(verbose_name=_("status"), choices=code_status, default=UPLOADED)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+
+    def status_display(self):
+        for s in self.code_status:
+            if self.status == s[0]:
+                return s[1]
+        return 'Undefined'
 
 
 class CodeError(models.Model):
@@ -122,7 +134,7 @@ class UserInformation(models.Model):
     first_name = models.CharField(max_length=40)
     last_name = models.CharField(max_length=40)
     student_id = models.IntegerField()
-    department = models.CharField(max_length=40)
+    department = models.CharField(max_length=40, choices=departments)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='information')
 
 
@@ -137,11 +149,12 @@ class Soltoon(models.Model):
         (0, UNIFORMS[1]),
     )
 
-    name = models.CharField(max_length=30)
+    name = models.CharField(verbose_name=_("soltoon name"), max_length=30)
     achievements = models.ManyToManyField(Mission, related_name='achieved_users', through=Achievement)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='soltoon')
     primary_uniform = models.IntegerField(choices=_uniforms)
     secondary_uniform = models.IntegerField(choices=_uniforms)
+    code = models.ForeignKey(to='Code', on_delete=models.SET_NULL, null=True)
 
 
 class CompetitionResult(models.Model):

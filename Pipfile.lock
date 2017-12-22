@@ -1,20 +1,20 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cf90c026dd48cd24651d10168b226b23738b45eb928d40d913975c39f153fd23"
+            "sha256": "e7ffb7e299611a3cb1a1612c0d33a541f12c6088c4c5fa409d83990c5fe3b085"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
-            "implementation_version": "3.6.3",
+            "implementation_version": "0",
             "os_name": "posix",
             "platform_machine": "x86_64",
             "platform_python_implementation": "CPython",
             "platform_release": "4.13.0-19-generic",
             "platform_system": "Linux",
             "platform_version": "#22-Ubuntu SMP Mon Dec 4 11:58:07 UTC 2017",
-            "python_full_version": "3.6.3",
-            "python_version": "3.6",
-            "sys_platform": "linux"
+            "python_full_version": "2.7.14",
+            "python_version": "2.7",
+            "sys_platform": "linux2"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -56,11 +56,24 @@
             ],
             "version": "==1.11.8"
         },
+        "django-formtools": {
+            "hashes": [
+                "sha256:cb2bd7c29c2104278e5a0e76f7ff256b9570acf11485d547ee0c1b35347359fb",
+                "sha256:7703793f1675aa6e871f9fed147e8563816d7a5b9affdc5e3459899596217f7c"
+            ],
+            "version": "==2.1"
+        },
         "django-modelcluster": {
             "hashes": [
                 "sha256:9edde7fb87b413c1114df47f928e95fbd6878de17f9f2caeea90e77766e272b5"
             ],
             "version": "==3.1"
+        },
+        "django-semanticui-forms": {
+            "hashes": [
+                "sha256:aacecba6d516ef28dff87317490c978025c441ab002b1df751410b2afdfbfc3d"
+            ],
+            "version": "==1.6.5"
         },
         "django-taggit": {
             "hashes": [

@@ -12,4 +12,6 @@ name = "pypi"
 [packages]
 
 wagtail = "*"
-django = "<2.0"
+Django = "<2.0"
+django-formtools = "*"
+django-semanticui-forms = "*"
