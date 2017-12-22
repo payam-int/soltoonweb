@@ -43,7 +43,7 @@ class Game(TemplateView):
             'action': reverse('soltoonwebsite_uploadcode')
         }
 
-        context['codes'] = Code.objects.filter(user=self.request.user)
+        context['codes'] = Code.objects.filter(user=self.request.user).order_by('-created_at')[:10]
 
         return context
 

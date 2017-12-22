@@ -43,7 +43,7 @@
                             {% for c in codes %}
                             <tr>
                                 <td class="collapsing">
-                                        <input type="radio">
+                                        <input type="radio" {% if c.status != 2 %}disabled{% endif %}>
                                 </td>
                                 <td class="ltr">{{ c.created_at }}</td>
                                 <td>{{ c.status_display }}</td>
