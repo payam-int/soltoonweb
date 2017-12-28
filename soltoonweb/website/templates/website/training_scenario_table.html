@@ -1,0 +1,33 @@
+{% extends 'website/game.html' %}
+{% load jformat %}
+{% block game-content %}
+    <div class="ui divided items">
+        <table class="ui very basic celled table">
+            <thead>
+            <tr>
+                <th>شرکت‌کننده</th>
+                <th>تاریخ ارسال</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for submittion in submittions %}
+                <tr>
+                    <td>
+                        <h4 class="ui image header">
+                            <img src="/{{ submittion.user.information.get.avatar }}" class="ui rounded image">
+                            <div class="content">
+                                {{ submittion.user.information.get.full_name }}
+                                <div class="sub header">{{ submittion.user.information.get.student_id }}
+                                </div>
+                            </div>
+                        </h4>
+                    </td>
+                    <td>
+                        {{ submittion.created_at | jformat }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

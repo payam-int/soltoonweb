@@ -22,9 +22,9 @@ from wagtail.wagtailcore import urls as wagtail_urls
 from website import urls as website_urls
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^cms/', include(wagtailadmin_urls)),
-    url(r'^documents/', include(wagtaildocs_urls)),
-    url(r'^blog/', include(wagtail_urls)),
+    # url(r'^cms/', include(wagtailadmin_urls)),
+    # url(r'^documents/', include(wagtaildocs_urls)),
+    # url(r'^blog/', include(wagtail_urls)),
     url(r'^', include(website_urls)),
 ]
 

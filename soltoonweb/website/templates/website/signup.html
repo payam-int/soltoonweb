@@ -1,0 +1,15 @@
+{% extends 'website/base_page.html' %}
+{% load semanticui %}
+{% block page %}
+    <div id="page-content">
+        <div class="container" id="signup">
+            <h2 class="ui header">ثبت نام</h2>
+            <br>
+            <form class="ui form" method="post" enctype="multipart/form-data">
+                {% render_form form %}
+                {% csrf_token %}
+                <button type="submit" class="ui button primary">ثبت نام</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

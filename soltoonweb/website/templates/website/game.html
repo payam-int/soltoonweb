@@ -1,119 +1,167 @@
 {% extends 'website/base_page.html' %}
 {% load semanticui %}
+{% load lineage %}
 {% block page %}
     <div id="page-content">
+
         <div class="container" id="page-game">
-            <div id="upload-code">
-                <form action="{{ upload_code.action }}" class="ui form" method="post" enctype="multipart/form-data">
-                    <div class="box">
-                        <h2 class="ui header">
-                            <i class="upload icon"></i>
-                            <div class="content">
-                                آپلود کد
-                            </div>
-                        </h2>
-
-                        {% csrf_token %}
-                        {% render_form upload_code.form %}
-                        <input type="hidden" name="command" value="upload-code">
+            <nav id="game-menu">
+                {% url 'soltoonwebsite_game_training' as soltoonwebsite_game_training %}
+                {% url 'soltoonwebsite_edit_profile' as soltoonwebsite_edit_profile %}
+                <div class="ui secondary menu">
+                    <a class="item disabled">
+                        رقابت‌ها
+                    </a>
+                    <a class="item disabled">
+                        برنامه‌ها
+                    </a>
+                    <a class="item {% ancestor soltoonwebsite_game_training %}"
+                       href="{{ soltoonwebsite_game_training }}">
+                        سناریو‌های آموزشی
+                    </a>
+                    <a class="item disabled">
+                        سلطون
+                    </a>
+                    <a class="item {% ancestor soltoonwebsite_edit_profile %}" href="{{ soltoonwebsite_edit_profile }}">
+                        مشخصات
+                    </a>
+                    <div class="right menu">
+                        <a class="ui item" href="{% url 'soltoonwebsite_logout' %}"> خروج </a>
                     </div>
-                    <button class="ui red button" type="submit">آپلود</button>
-                </form>
-            </div>
-            <div id="select-code">
-                <form action="{{ upload_code.action }}" class="ui form" method="post" enctype="multipart/form-data">
-                    <div class="box">
-                        <h2 class="ui header">
-                            <i class="code icon"></i>
-                            <div class="content">
-                                کد‌های آپلود شده
-                            </div>
-                        </h2>
+                </div>
+                <div class="ui segment">
+                    <p></p>
+                </div>
 
-                        <table class="ui compact celled definition table">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>تاریخ ارسال</th>
-                                <th>وضعیت کد</th>
-                                <th>نام فایل</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for c in codes %}
-                            <tr>
-                                <td class="collapsing">
-                                        <input type="radio" {% if c.status != 2 %}disabled{% endif %}>
-                                </td>
-                                <td class="ltr">{{ c.created_at }}</td>
-                                <td>{{ c.status_display }}</td>
-                                <td>{{ c.filename }}</td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+            </nav>
 
-                        <input type="hidden" name="command" value="upload-code">
-                    </div>
-                    <button class="ui blue button" type="submit">انتخاب کد</button>
-                </form>
-            </div>
-            <div id="user-info">
-                <div class="box">
-                    <h2 class="ui header">
-                        <i class="user icon"></i>
-                        <div class="content">
-                            مشخصات شما
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="ui {% if message.tags %}{{ message.tags }}{% endif %} message">
+                            <p>{{ message }}</p>
                         </div>
-                    </h2>
-                    <table class="ui very basic table fixed">
-                        <tbody>
-                        <tr>
-                            <td>نام:</td>
-                            <td>{{ user.information.first.first_name }}</td>
-                        </tr>
-                        <tr>
-                            <td>نام خانوادگی:</td>
-                            <td>{{ user.information.first.last_name }}</td>
-                        </tr>
-                        <tr>
-                            <td>شماره دانشجویی:</td>
-                            <td>{{ user.information.first.student_id }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    {% endfor %}
 
                 </div>
-                <button class="ui red button disabled">ویرایش مشخصات</button>
+            {% endif %}
+            <div id="game-content">
+                {% block game-content %}{% endblock %}
             </div>
-            <div id="user-soltoon">
-                <div class="box">
-                    <h2 class="ui header">
-                        <i class="star icon"></i>
-                        <div class="content">
-                            مشخصات سلطون شما
-                        </div>
-                    </h2>
-                    <table class="ui very basic table fixed">
-                        <tbody>
-                        <tr>
-                            <td>سلطون:</td>
-                            <td>{{ user.soltoon.first.name }}</td>
-                        </tr>
-                        <tr>
-                            <td>لباس:</td>
-                            <td>{{ user.soltoon.first.primary_uniform }}{{ user.soltoon.first.secondary_uniform }}</td>
-                        </tr>
-                        <tr>
-                            <td>دست‌آوردها:</td>
-                            <td>{{ user.soltoon.first.student_id }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-                <button class="ui red button disabled">ویرایش سلطون</button>
-            </div>
+            {#            #}
+            {#            <div id="upload-code">#}
+            {#                <form action="{{ upload_code.action }}" class="ui form" method="post" enctype="multipart/form-data">#}
+            {#                    <div class="box">#}
+            {#                        <h2 class="ui header">#}
+            {#                            <i class="upload icon"></i>#}
+            {#                            <div class="content">#}
+            {#                                آپلود کد#}
+            {#                            </div>#}
+            {#                        </h2>#}
+            {##}
+            {#                        {% csrf_token %}#}
+            {#                                    {% render_form upload_code.form %}#}
+            {#                        <input type="hidden" name="command" value="upload-code">#}
+            {#                    </div>#}
+            {#                    <button class="ui red button" type="submit">آپلود</button>#}
+            {#                </form>#}
+            {#            </div>#}
+            {#            <div id="select-code">#}
+            {#                <form action="{{ upload_code.action }}" class="ui form" method="post" enctype="multipart/form-data">#}
+            {#                    <div class="box">#}
+            {#                        <h2 class="ui header">#}
+            {#                            <i class="code icon"></i>#}
+            {#                            <div class="content">#}
+            {#                                کد‌های آپلود شده#}
+            {#                            </div>#}
+            {#                        </h2>#}
+            {##}
+            {#                                    <table class="ui compact celled definition table">#}
+            {#                                        <thead>#}
+            {#                                        <tr>#}
+            {#                                            <th></th>#}
+            {#                                            <th>شماره</th>#}
+            {#                                            <th>تاریخ ارسال</th>#}
+            {#                                            <th>وضعیت کد</th>#}
+            {#                                            <th>نام فایل</th>#}
+            {#                                        </tr>#}
+            {#                                        </thead>#}
+            {#                                        <tbody>#}
+            {#                                        {% for c in codes %}#}
+            {#                                        <tr>#}
+            {#                                            <td class="collapsing">#}
+            {#                                                    <input type="radio" {% if c.status != 2 %}disabled{% endif %}>#}
+            {#                                            </td>#}
+            {#                                            <td class="center aligned">{{ c.id }}</td>#}
+            {#                                            <td class="ltr">{{ c.created_at }}</td>#}
+            {#                                            <td>{{ c.status_display }}</td>#}
+            {#                                            <td>{{ c.filename }}</td>#}
+            {#                                        </tr>#}
+            {#                                        {% endfor %}#}
+            {#                                        </tbody>#}
+            {#                                    </table>#}
+            {##}
+            {#                        <input type="hidden" name="command" value="upload-code">#}
+            {#                    </div>#}
+            {#                    <button class="ui blue button" type="submit">انتخاب کد</button>#}
+            {#                </form>#}
+            {#            </div>#}
+            {#            <div id="user-info">#}
+            {#                <div class="box">#}
+            {#                    <h2 class="ui header">#}
+            {#                        <i class="user icon"></i>#}
+            {#                        <div class="content">#}
+            {#                            مشخصات شما#}
+            {#                        </div>#}
+            {#                    </h2>#}
+            {#                    <table class="ui very basic table fixed">#}
+            {#                        <tbody>#}
+            {#                        <tr>#}
+            {#                            <td>نام:</td>#}
+            {#                            <td>{{ user.information.first.first_name }}</td>#}
+            {#                        </tr>#}
+            {#                        <tr>#}
+            {#                            <td>نام خانوادگی:</td>#}
+            {#                            <td>{{ user.information.first.last_name }}</td>#}
+            {#                        </tr>#}
+            {#                        <tr>#}
+            {#                            <td>شماره دانشجویی:</td>#}
+            {#                            <td>{{ user.information.first.student_id }}</td>#}
+            {#                        </tr>#}
+            {#                        </tbody>#}
+            {#                    </table>#}
+            {##}
+            {#                </div>#}
+            {#                <button class="ui red button disabled">ویرایش مشخصات</button>#}
+            {#            </div>#}
+            {#            <div id="user-soltoon">#}
+            {#                <div class="box">#}
+            {#                    <h2 class="ui header">#}
+            {#                        <i class="star icon"></i>#}
+            {#                        <div class="content">#}
+            {#                            مشخصات سلطون شما#}
+            {#                        </div>#}
+            {#                    </h2>#}
+            {#                    <table class="ui very basic table fixed">#}
+            {#                        <tbody>#}
+            {#                        <tr>#}
+            {#                            <td>سلطون:</td>#}
+            {#                            <td>{{ user.soltoon.first.name }}</td>#}
+            {#                        </tr>#}
+            {#                        <tr>#}
+            {#                            <td>لباس:</td>#}
+            {#                            <td>{{ user.soltoon.first.primary_uniform }}{{ user.soltoon.first.secondary_uniform }}</td>#}
+            {#                        </tr>#}
+            {#                        <tr>#}
+            {#                            <td>دست‌آوردها:</td>#}
+            {#                            <td>{{ user.soltoon.first.student_id }}</td>#}
+            {#                        </tr>#}
+            {#                        </tbody>#}
+            {#                    </table>#}
+            {##}
+            {#                </div>#}
+            {#                <button class="ui red button disabled">ویرایش سلطون</button>#}
+            {#            </div>#}
 
         </div>
 

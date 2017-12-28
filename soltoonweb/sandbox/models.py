@@ -1,11 +1,18 @@
+from datetime import datetime
+
+import sys
+from PIL import Image
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext as _
 import os
-
+from django.utils import timezone
 
 # Create your models here.
+from io import BytesIO
+
 
 class Code(models.Model):
     UPLOADED = 0
@@ -31,7 +38,7 @@ class Code(models.Model):
     )
 
     file = models.FileField(verbose_name=_("file"), upload_to='private_media/codes/',
-                            validators=[FileExtensionValidator(['zip', 'rar', 'tar.gz'])], )
+                            validators=[FileExtensionValidator(['zip', 'rar', 'tar.gz', 'gz'])], )
     file_type = models.CharField(verbose_name=_("file type"), choices=file_types, max_length=5)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, editable=False)
     status = models.IntegerField(verbose_name=_("status"), choices=code_status, default=UPLOADED)
@@ -45,6 +52,32 @@ class Code(models.Model):
             if self.status == s[0]:
                 return s[1]
         return 'Undefined'
+
+
+class TrainingScenarioCode(Code):
+    training_scenario = models.ForeignKey(to='TrainingScenario', on_delete=models.CASCADE,
+                                          related_name='all_submittions')
+
+
+class TrainingScenario(models.Model):
+    name = models.CharField(verbose_name=_("name"), max_length=128)
+    description = models.TextField(verbose_name=_("description"))
+    creator = models.ForeignKey(to=User, on_delete=models.SET_NULL, editable=False, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    deadline = models.DateTimeField()
+
+    def from_now_deadline(self):
+        diff = int((self.deadline - timezone.now()).total_seconds())
+        if (diff > 0):
+            minutes = diff // 60
+            hours = diff // 3600 % 24
+            days = diff // (3600 * 24)
+
+            return "{0} {1} {2} {3} {4} {5}".format(days, _("days"), hours, _("hours"), minutes, _("minutes"))
+        return _("passed")
+
+    def __str__(self):
+        return self.name
 
 
 class CodeError(models.Model):
@@ -125,7 +158,7 @@ class Achievement(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
 
 
-class UserInformation(models.Model):
+class UserProfile(models.Model):
     departments = (
         ("MCS", _("mathematical sciences")),
         ("CE", _("computer engineering"))
@@ -134,8 +167,41 @@ class UserInformation(models.Model):
     first_name = models.CharField(max_length=40)
     last_name = models.CharField(max_length=40)
     student_id = models.IntegerField()
+    ssn = models.IntegerField()
+
     department = models.CharField(max_length=40, choices=departments)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='information')
+    enterance_year = models.IntegerField(verbose_name=_("enterance year"))
+    avatar = models.ImageField(upload_to='media/avatars/', null=True)
+
+    def full_name(self):
+        return "{0} {1}".format(self.first_name, self.last_name)
+
+    def save(self):
+        # Opening the uploaded image
+        im = Image.open(self.avatar)
+
+        output = BytesIO()
+
+        crop_size = min(im.size)
+        print(int(im.size[0] / 2 - crop_size / 2))
+
+        if not (im.size[0] == 100) or not (im.size[1] == 100):
+            # Resize/modify the image
+            im = im.crop(
+                (int(im.size[0] / 2 - crop_size / 2), int(im.size[1] / 2 - crop_size / 2),
+                 int(im.size[0] / 2 + crop_size / 2),
+                 int(im.size[1] / 2 + crop_size / 2))).resize((100, 100), Image.ANTIALIAS)
+
+            # after modifications, save it to the output
+            im.save(output, format='JPEG', quality=100)
+            output.seek(0)
+
+            # change the imagefield value to be the newley modifed image value
+            self.avatar = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.avatar.name.split('.')[0],
+                                               'image/jpeg',
+                                               sys.getsizeof(output), None)
+        super(UserProfile, self).save()
 
 
 class Soltoon(models.Model):

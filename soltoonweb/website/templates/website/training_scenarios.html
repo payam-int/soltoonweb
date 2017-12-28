@@ -1,0 +1,27 @@
+{% extends 'website/game.html' %}
+
+{% block game-content %}
+    <div class="ui divided items">
+    {% for scenario in scenarios %}
+        <div class="item">
+            <div class="content">
+                <a class="header" href="{% url 'soltoonwebsite_game_training_table' scenario=scenario.id %}">{{ scenario.name }}</a>
+                <div class="meta">
+                    <span class="cinema">{{ scenario.from_now_deadline }}</span>
+                </div>
+                <div class="description">
+                    <p>{{ scenario.description }}</p>
+                </div>
+                <div class="extra">
+                    <a class="ui right floated primary button" href="{% url 'soltoonwebsite_game_training_send' scenario=scenario.id %}">
+                        ارسال کد
+                    </a>
+                    <a class="ui right floated button" href="{% url 'soltoonwebsite_game_training_table' scenario=scenario.id %}">
+جدول نتایج
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

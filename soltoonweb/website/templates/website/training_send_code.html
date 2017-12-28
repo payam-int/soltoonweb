@@ -1,0 +1,38 @@
+{% extends 'website/game.html' %}
+{% load semanticui %}
+{% load jformat %}
+{% block game-content %}
+    <div class="flexbox training-scenarios">
+        <div class="flexitem">
+            <form class="ui form" method="post" enctype="multipart/form-data">
+                <h3 class="ui header">ارسال کد جدید</h3>
+                {% render_form form %}
+                {% csrf_token %}
+                <button class="ui button">ارسال</button>
+            </form>
+        </div>
+        <div class="flexitem">
+            <div class="ui">
+                <h3 class="ui header">ارسال قبلی</h3>
+                <table class="ui definition table">
+                    <tbody>
+                    <tr>
+                        <td class="five wide column">شماره ارسال</td>
+                        <td>{{ code.id }}</td>
+                    </tr>
+                    <tr>
+                        <td>نام فایل</td>
+                        <td>{{ code.filename }}</td>
+                    </tr>
+                    <tr>
+                        <td>زمان ارسال</td>
+                        <td>{{ code.created_at | jformat }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

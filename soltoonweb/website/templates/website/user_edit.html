@@ -1,0 +1,10 @@
+{% extends 'website/game.html' %}
+{% load semanticui %}
+{% load jformat %}
+{% block game-content %}
+    <form class="ui form" method="post" enctype="multipart/form-data">
+        {% render_form form %}
+        {% csrf_token %}
+    <button class="ui button primary" type="submit">ارسال</button>
+    </form>
+{% endblock %}

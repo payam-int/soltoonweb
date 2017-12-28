@@ -7,6 +7,9 @@ body {
   direction: rtl;
   font: 12pt "Samim", Arial; }
 
+a {
+  text-decoration: none; }
+
 .container {
   width: 1140px;
   margin: 0 auto; }
@@ -196,10 +199,7 @@ body {
   background: #fefefe; }
 
 #page-game {
-  padding: 36px 24px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap; }
+  padding: 36px 24px; }
   #page-game #user-info, #page-game #user-soltoon, #page-game #upload-code, #page-game #select-code {
     width: 50%;
     padding: 0 24px;
@@ -292,65 +292,30 @@ input {
 .small-screen {
   visibility: hidden; }
 
-@media screen and (max-width: 768px) {
-  .mobile {
-    visibility: visible;
-    display: block; }
+#game-menu {
+  border-bottom: 1px solid #eee;
+  margin: 0 0 24px 0; }
+  #game-menu ul {
+    display: flex;
+    width: 100%;
+    justify-content: center; }
+    #game-menu ul li, #game-menu ul li a {
+      display: block; }
+    #game-menu ul li {
+      margin: 0 20px; }
 
-  .not-mobile {
-    visibility: hidden;
-    display: none !important; }
-
-  .container {
-    width: 100%; }
-
-  .mobile-vertical-flex {
-    flex-direction: column; }
-
-  .mobile-full-width {
-    width: 100% !important; }
-
-  #mobile-header {
-    padding: 0 24px; }
-    #mobile-header #logo img {
-      height: 60px; }
-
-  #front-blocks {
+.flexbox {
+  display: flex;
+  flex-wrap: wrap; }
+  .flexbox > .flexitem {
+    width: 50%;
     box-sizing: border-box;
-    padding: 0 24px;
-    margin: 24px 0 0 0; }
-    #front-blocks .block {
-      height: 196px;
-      margin: 12px 0;
-      box-sizing: border-box;
-      padding: 12px 0 0 0; }
+    padding: 0 24px 0 24px; }
 
-  #front-content #front-content-text {
-    padding: 0 36px; }
-  #front-content h1 {
-    font-size: 1.7rem; }
+.messages {
+  padding: 24px 0 48px 0; }
 
-  #banner .competition-banner .player-title {
-    width: 360px; }
-  #banner .competition-banner .player-picture {
-    height: 60%; }
-  #banner .competition-banner .player1-picture {
-    right: -100px; }
-  #banner .competition-banner .player2-picture {
-    left: -100px; }
-  #banner .competition-banner .player1-title {
-    top: 48px;
-    font-size: 1.8rem;
-    margin-right: -170px; }
-  #banner .competition-banner .against {
-    top: 90px; }
-  #banner .competition-banner .player2-title {
-    top: 120px;
-    font-size: 1.8rem;
-    text-align: left;
-    margin-left: -170px; }
-
-  #footer {
-    text-align: center; } }
+#signup {
+  padding: 72px 0; }
 
 /*# sourceMappingURL=style.css.map */
