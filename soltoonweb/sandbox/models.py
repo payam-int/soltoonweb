@@ -170,8 +170,8 @@ class UserProfile(models.Model):
 
     first_name = models.CharField(verbose_name=_("first name"), max_length=40)
     last_name = models.CharField(verbose_name=_("last name"), max_length=40)
-    student_id = models.IntegerField(verbose_name=_("student id"))
-    ssn = models.IntegerField(verbose_name=_("social security number"))
+    student_id = models.CharField(verbose_name=_("student id"), max_length=20)
+    ssn = models.CharField(verbose_name=_("social security number"), max_length=20)
 
     department = models.CharField(verbose_name=_("department"), max_length=40, choices=departments)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='information')
