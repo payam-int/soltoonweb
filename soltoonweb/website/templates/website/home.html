@@ -2,25 +2,25 @@
 {% load static %}
 {% block page %}
 
-    <div id="banner" class="container">
-{#        <div class="banner competition-banner">#}
-{#            <div class="player-picture player1-picture"></div>#}
-{#            <div class="player-picture player2-picture"></div>#}
-{##}
-{#            <div class="player-title player1-title">سلطان نادرشاه</div>#}
-{#            <div class="against"><span class="pomping-dots"><span>.</span><span>.</span><span>.</span></span></div>#}
-{#            <div class="player-title player2-title">سلطان بن عبدالعزیز</div>#}
-{##}
-{#            <div class="banner-actions">#}
-{#                <div class="banner-button">#}
-{#                    <i class="fa fa-play-circle"></i>#}
-{#                </div>#}
-{#                <div class="game-type">#}
-{#                    بازی دوستانه#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-    </div>
+{#    <div id="banner" class="container">#}
+        {#        <div class="banner competition-banner">#}
+        {#            <div class="player-picture player1-picture"></div>#}
+        {#            <div class="player-picture player2-picture"></div>#}
+        {##}
+        {#            <div class="player-title player1-title">سلطان نادرشاه</div>#}
+        {#            <div class="against"><span class="pomping-dots"><span>.</span><span>.</span><span>.</span></span></div>#}
+        {#            <div class="player-title player2-title">سلطان بن عبدالعزیز</div>#}
+        {##}
+        {#            <div class="banner-actions">#}
+        {#                <div class="banner-button">#}
+        {#                    <i class="fa fa-play-circle"></i>#}
+        {#                </div>#}
+        {#                <div class="game-type">#}
+        {#                    بازی دوستانه#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
+{#    </div>#}
 
     <script defer src="https://use.fontawesome.com/releases/v5.0.1/js/all.js"></script>
     <div id="front-blocks" class="container mobile-vertical-flex">
@@ -41,19 +41,18 @@
     </div>
     <div id="front-content">
         <div id="front-content-text" class="container">
-            <h1>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</h1>
-            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و
-                متون
-                بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای
-                متنوع
-                با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان
-                جامعه
-                و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و
-                فرهنگ
-                پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و
-                شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل
-                دنیای
-                موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="ui {% if message.tags %}{{ message.tags }}{% endif %} message">
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            {% endif %}
+            <h1>سلطون چیست؟</h1>
+            <p>سلطون یک بازی استراتژی است.</p>
         </div>
     </div>
 {% endblock %}

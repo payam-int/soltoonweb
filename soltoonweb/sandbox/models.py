@@ -2,11 +2,13 @@ from datetime import datetime
 
 import sys
 from PIL import Image
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import FileExtensionValidator
 from django.db import models
-from django.utils.translation import gettext as _
+from django.templatetags.static import static
+from django.utils.translation import gettext_lazy as _
 import os
 from django.utils import timezone
 
@@ -69,7 +71,7 @@ class TrainingScenario(models.Model):
     def from_now_deadline(self):
         diff = int((self.deadline - timezone.now()).total_seconds())
         if (diff > 0):
-            minutes = diff // 60
+            minutes = diff // 60 % 60
             hours = diff // 3600 % 24
             days = diff // (3600 * 24)
 
@@ -164,43 +166,48 @@ class UserProfile(models.Model):
         ("CE", _("computer engineering"))
     )
 
-    first_name = models.CharField(max_length=40)
-    last_name = models.CharField(max_length=40)
-    student_id = models.IntegerField()
-    ssn = models.IntegerField()
+    default_avatar = static("sandbox/img/default-avatar.jpg")
 
-    department = models.CharField(max_length=40, choices=departments)
+    first_name = models.CharField(verbose_name=_("first name"), max_length=40)
+    last_name = models.CharField(verbose_name=_("last name"), max_length=40)
+    student_id = models.IntegerField(verbose_name=_("student id"))
+    ssn = models.IntegerField(verbose_name=_("social security number"))
+
+    department = models.CharField(verbose_name=_("department"), max_length=40, choices=departments)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='information')
     enterance_year = models.IntegerField(verbose_name=_("enterance year"))
-    avatar = models.ImageField(upload_to='media/avatars/', null=True)
+    avatar = models.ImageField(verbose_name=_("avatar"), upload_to='media/avatars/', null=False,
+                               default=default_avatar)
 
     def full_name(self):
         return "{0} {1}".format(self.first_name, self.last_name)
 
     def save(self):
         # Opening the uploaded image
-        im = Image.open(self.avatar)
 
-        output = BytesIO()
+        if not (self.avatar == self.default_avatar):
+            im = Image.open(self.avatar)
 
-        crop_size = min(im.size)
-        print(int(im.size[0] / 2 - crop_size / 2))
+            output = BytesIO()
 
-        if not (im.size[0] == 100) or not (im.size[1] == 100):
-            # Resize/modify the image
-            im = im.crop(
-                (int(im.size[0] / 2 - crop_size / 2), int(im.size[1] / 2 - crop_size / 2),
-                 int(im.size[0] / 2 + crop_size / 2),
-                 int(im.size[1] / 2 + crop_size / 2))).resize((100, 100), Image.ANTIALIAS)
+            crop_size = min(im.size)
+            print(int(im.size[0] / 2 - crop_size / 2))
 
-            # after modifications, save it to the output
-            im.save(output, format='JPEG', quality=100)
-            output.seek(0)
+            if not (im.size[0] == 100) or not (im.size[1] == 100):
+                # Resize/modify the image
+                im = im.crop(
+                    (int(im.size[0] / 2 - crop_size / 2), int(im.size[1] / 2 - crop_size / 2),
+                     int(im.size[0] / 2 + crop_size / 2),
+                     int(im.size[1] / 2 + crop_size / 2))).resize((100, 100), Image.ANTIALIAS)
 
-            # change the imagefield value to be the newley modifed image value
-            self.avatar = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.avatar.name.split('.')[0],
-                                               'image/jpeg',
-                                               sys.getsizeof(output), None)
+                # after modifications, save it to the output
+                im.save(output, format='JPEG', quality=100)
+                output.seek(0)
+
+                # change the imagefield value to be the newley modifed image value
+                self.avatar = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.avatar.name.split('.')[0],
+                                                   'image/jpeg',
+                                                   sys.getsizeof(output), None)
         super(UserProfile, self).save()
 
 

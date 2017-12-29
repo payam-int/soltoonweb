@@ -1,20 +1,21 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.forms.models import model_to_dict
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.contrib.auth import logout
-from django.utils.translation import gettext as _
+from django.contrib.auth import logout, login
+from django.utils.translation import ugettext_lazy as _
 
 # Create your views here.
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView, FormView, UpdateView
@@ -39,6 +40,11 @@ class Login(LoginView):
 
     def get(self, request):
         return render(request, self.template_name)
+
+    def form_invalid(self, form):
+        for e in form.errors:
+            messages.error(self.request, _("Invalid login information."))
+        return super().form_invalid(form)
 
 
 class Logout(View):
@@ -78,6 +84,12 @@ class TrainingScenarios(TemplateView):
     def get_context_data(self, **kwargs):
         c = super().get_context_data(**kwargs)
         c['scenarios'] = TrainingScenario.objects.all()
+        c['user'] = self.request.user
+        if not (self.request.user.information.exists()):
+            messages.info(self.request, _("enter information before send"))
+        else:
+            print(self.request.user.information)
+
         return c
 
 
@@ -86,7 +98,6 @@ class Game(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(Game, self).get_context_data(**kwargs)
-
         context['user'] = self.request.user
         context['codes'] = Code.objects.filter(user=self.request.user).order_by('-created_at')[:10]
 
@@ -95,9 +106,10 @@ class Game(TemplateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         request_user = request.user
-        if not (request_user.information.exists()) or not (request_user.soltoon.exists()):
+        if not (request_user.information.exists()):
             return HttpResponseRedirect(reverse('soltoonwebsite_edit_profile'))
-
+        else:
+            return HttpResponseRedirect(reverse('soltoonwebsite_game_training'))
         return super(Game, self).dispatch(request, *args, **kwargs)
 
 
@@ -126,22 +138,6 @@ class RegisterGame(SessionWizardView):
         return super().dispatch(request, *args, **kwargs)
 
 
-@login_required
-def upload_code(request):
-    if not (request.method == 'POST'):
-        return HttpResponseRedirect(reverse('soltoonwebsite_game'))
-
-    code = UploadCodeForm(request.POST, request.FILES)
-    if code.is_valid():
-        codeModel = code.save(commit=False)
-        codeModel.user = request.user
-        codeModel.save()
-    else:
-        return
-
-    return HttpResponseRedirect(reverse('soltoonwebsite_game'))
-
-
 class TrainingScenariosSubmittions(TemplateView):
     template_name = 'website/training_scenario_table.html'
 
@@ -162,8 +158,12 @@ class TrainingScenariosSendCode(FormView):
         context = super().get_context_data(**kwargs)
         current_scenario_id = self.kwargs['scenario']
         context['scenario'] = TrainingScenario.objects.get(pk=current_scenario_id)
-        context['code'] = TrainingScenarioCode.objects.get(training_scenario_id=current_scenario_id,
-                                                           user=self.request.user)
+        try:
+            context['code'] = TrainingScenarioCode.objects.get(training_scenario_id=current_scenario_id,
+                                                               user=self.request.user)
+        except:
+            context['code'] = None
+
         return context
 
     def form_valid(self, form):
@@ -180,23 +180,49 @@ class TrainingScenariosSendCode(FormView):
 class Signup(FormView):
     form_class = SignupForm
     template_name = 'website/signup.html'
+    success_url = reverse_lazy('soltoonwebsite_home')
 
     def form_valid(self, form):
         user = form.save(commit=False)
         user.is_active = False
+        user.save()
         self.send_activate_mail(user, form)
+        return super(Signup, self).form_valid(form)
 
     def send_activate_mail(self, user, form):
         current_site = get_current_site(self.request)
         mail_subject = _('Activate your Soltoon account')
-        message = render_to_string('website/signup_activate_mail.html', {
+        context = {
             'user': user,
             'domain': current_site.domain,
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': account_activation_token.make_token(user),
-        })
+        }
+        message = render_to_string('website/mail/signup_activate_mail.html', context)
+
         to_email = form.cleaned_data.get('email')
         email = EmailMessage(
             mail_subject, message, to=[to_email]
         )
         email.send()
+
+        messages.success(self.request, 'User has been created. check your email for confirmation mail.')
+
+
+class ActivateUser(TemplateView):
+    template_name = 'website/activate_user.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            uid = force_text(urlsafe_base64_decode(self.kwargs['uidb64']))
+            user = User.objects.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        if user is not None and account_activation_token.check_token(user, self.kwargs['token']):
+            user.is_active = True
+            user.save()
+            login(request, user)
+            return HttpResponseRedirect(reverse('soltoonwebsite_home'))
+
+        return super().dispatch(request, *args, **kwargs)

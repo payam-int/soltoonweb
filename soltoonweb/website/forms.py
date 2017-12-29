@@ -4,11 +4,12 @@ from django.forms import ModelForm, FileField, forms, BooleanField, ImageField, 
 from django.db import models
 
 from sandbox.models import Soltoon, UserProfile, Code, TrainingScenarioCode
-from soltoonweb import settings
-
+from django.conf import settings
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
+
 
 
 class SoltoonForm(ModelForm):
@@ -18,7 +19,7 @@ class SoltoonForm(ModelForm):
 
 
 class EditProfileForm(ModelForm):
-    avatar = ImageField(label="avatar", required=False, widget=FileInput(attrs={'_no_label': False}))
+    avatar = ImageField(label=_("avatar"), required=False, widget=FileInput(attrs={'_no_label': False}))
 
     class Meta:
         model = UserProfile

@@ -13,9 +13,15 @@
                     <p>{{ scenario.description }}</p>
                 </div>
                 <div class="extra">
-                    <a class="ui right floated primary button" href="{% url 'soltoonwebsite_game_training_send' scenario=scenario.id %}">
+                    {% if user.information.get %}
+                    <a class="ui right floated primary button"  href="{% url 'soltoonwebsite_game_training_send' scenario=scenario.id %}">
                         ارسال کد
                     </a>
+                    {% else %}
+                    <a class="ui right floated primary button disabled" title="مشخصات خود را وارد کنید." href="#">
+                        ارسال کد
+                    </a>
+                    {% endif %}
                     <a class="ui right floated button" href="{% url 'soltoonwebsite_game_training_table' scenario=scenario.id %}">
 جدول نتایج
                     </a>

@@ -22,12 +22,22 @@
                             {% csrf_token %}
                             <div class="submit">
                                 <button type="submit" class="ui button">ورود</button>
-                                <button type="button" class="ui red button">فراموشی رمز عبور</button>
+                                <a href="{% url 'soltoonwebsite_signup' %}" class="ui red button">ثبت نام</a>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="page-content">
+                    {% if messages %}
+                        <div class="messages">
+                            {% for message in messages %}
+                                <div class="ui {% if message.tags %}{{ message.tags }}{% endif %} message">
+                                    <p>{{ message }}</p>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    {% endif %}
                     <h2>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده</h2>
                     <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.
                         چاپگرها
