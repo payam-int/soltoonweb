@@ -1,0 +1,137 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-29 18:27+0330\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: sandbox/models.py:26
+msgid "uploaded"
+msgstr "آپلود شده"
+
+#: sandbox/models.py:27
+msgid "compiled"
+msgstr "کامپایل شده"
+
+#: sandbox/models.py:28
+msgid "compiling"
+msgstr "درحال کامپایل"
+
+#: sandbox/models.py:29
+msgid "error in compilation"
+msgstr "خطا در کامپایل"
+
+#: sandbox/models.py:42
+msgid "file"
+msgstr "فایل"
+
+#: sandbox/models.py:44
+msgid "file type"
+msgstr "نوع فایل"
+
+#: sandbox/models.py:46
+msgid "status"
+msgstr "وضعیت"
+
+#: sandbox/models.py:65 sandbox/models.py:130 sandbox/models.py:144
+msgid "name"
+msgstr "نام"
+
+#: sandbox/models.py:66 sandbox/models.py:131 sandbox/models.py:145
+msgid "description"
+msgstr "توضیحات"
+
+#: sandbox/models.py:78
+msgid "days"
+msgstr "روز"
+
+#: sandbox/models.py:78
+msgid "hours"
+msgstr "ساعت"
+
+#: sandbox/models.py:78
+msgid "minutes"
+msgstr "دقیقه"
+
+#: sandbox/models.py:79
+msgid "passed"
+msgstr "گذشته"
+
+#: sandbox/models.py:90
+msgid "compile error"
+msgstr "خطای کامپایل"
+
+#: sandbox/models.py:91
+msgid "decompress error"
+msgstr "خطای دیکامپرس"
+
+#: sandbox/models.py:108
+msgid "submitted"
+msgstr "ارسال شده"
+
+#: sandbox/models.py:109
+msgid "running"
+msgstr "در حال اجرا"
+
+#: sandbox/models.py:110
+msgid "exited"
+msgstr "خارج شده"
+
+#: sandbox/models.py:111
+msgid "ready"
+msgstr "آماده"
+
+#: sandbox/models.py:112
+msgid "error"
+msgstr "خطا"
+
+#: sandbox/models.py:165
+msgid "mathematical sciences"
+msgstr "علوم ریاضی"
+
+#: sandbox/models.py:166
+msgid "computer engineering"
+msgstr "مهندسی کامپیوتر"
+
+#: sandbox/models.py:171
+msgid "first name"
+msgstr "نام"
+
+#: sandbox/models.py:172
+msgid "last name"
+msgstr "نام خانوادگی"
+
+#: sandbox/models.py:173
+msgid "student id"
+msgstr "شماره‌ی دانشجویی"
+
+#: sandbox/models.py:174
+msgid "social security number"
+msgstr "شماره ملی"
+
+#: sandbox/models.py:176
+msgid "department"
+msgstr "دانشکده"
+
+#: sandbox/models.py:178
+msgid "enterance year"
+msgstr "سال ورود"
+
+#: sandbox/models.py:179
+msgid "avatar"
+msgstr "آواتار"
+
+#: sandbox/models.py:225
+msgid "soltoon name"
+msgstr "نام سلطون"
