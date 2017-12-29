@@ -206,7 +206,7 @@ class Signup(FormView):
         )
         email.send()
 
-        messages.success(self.request, 'User has been created. check your email for confirmation mail.')
+        messages.success(self.request, _('User has been created. check your email for confirmation mail.'))
 
 
 class ActivateUser(TemplateView):

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-29 18:27+0330\n"
+"POT-Creation-Date: 2017-12-29 20:07+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,6 +15,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: website/forms.py:22
+msgid "avatar"
+msgstr "آواتار"
 
 #: website/templates/website/mail/signup_activate_mail.html:4
 #, python-format
@@ -34,10 +38,14 @@ msgstr ""
 msgid "Invalid login information."
 msgstr "مشخصات وارد شده اشتباه است."
 
-#: website/views.py:90
+#: website/views.py:89
 msgid "enter information before send"
 msgstr "لطفا قبل از ارسال پاسخ اطلاعات خود را کامل کنید."
 
-#: website/views.py:195
+#: website/views.py:194
 msgid "Activate your Soltoon account"
 msgstr "فعال‌سازی حساب سلطون"
+
+#: website/views.py:209
+msgid "User has been created. check your email for confirmation mail."
+msgstr "شما ثبت نام شدید. ایمیل تایید برای شما فرستاده شد."
