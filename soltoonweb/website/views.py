@@ -238,8 +238,8 @@ class Signup(FormView):
         messages.success(self.request, _('User has been created. check your email for confirmation mail.'))
 
 
-class ActivateUser(TemplateView):
-    template_name = 'website/activate_user.html'
+class ActivateUser(View):
+    # template_name = 'website/activate_user.html'
 
     def dispatch(self, request, *args, **kwargs):
         try:
@@ -254,4 +254,4 @@ class ActivateUser(TemplateView):
             login(request, user)
             return HttpResponseRedirect(reverse('soltoonwebsite_home'))
 
-        return super().dispatch(request, *args, **kwargs)
+        return HttpResponse("ERROR.")

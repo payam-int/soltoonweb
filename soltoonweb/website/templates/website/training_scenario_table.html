@@ -7,6 +7,7 @@
             <table class="ui very basic celled table">
                 <thead>
                 <tr>
+                    <th>ردیف</th>
                     <th>شرکت‌کننده</th>
                     <th>تاریخ ارسال</th>
                 </tr>
@@ -14,6 +15,9 @@
                 <tbody>
                 {% for submittion in submittions %}
                     <tr>
+                        <td>
+                            {{ forloop.counter }}
+                        </td>
                         <td>
                             <h4 class="ui image header">
                                 <img src="/{{ submittion.user.information.get.avatar.url }}" class="ui rounded image">
