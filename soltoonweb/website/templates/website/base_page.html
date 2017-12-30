@@ -10,6 +10,7 @@
               type="text/css"/>
         <link rel="stylesheet" href="{% static 'website/css/style.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'website/lib/semantic/dist/semantic.rtl.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'website/lib/image-picker/image-picker.css' %}">
 
         {% block page_head_css %}{% endblock %}
     {% endblock %}
@@ -54,7 +55,9 @@
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
     <script src="{% static 'website/lib/semantic/dist/semantic.min.js' %}"></script>
-    <script>$('.ui.dropdown').dropdown();</script>
+    <script src="{% static 'website/lib/image-picker/image-picker.min.js' %}"></script>
+    <script>$('.ui.dropdown').dropdown();
+    $("select.chooseUniform").imagepicker();</script>
     {% block page_footer_javascript %}{% endblock %}
 {% endblock footer_javascript %}
 </body>

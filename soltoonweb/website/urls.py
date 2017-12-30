@@ -13,6 +13,8 @@ urlpatterns = [
                       name='soltoonwebsite_logout'),
                   url(r'^user/edit/$', views.EditProfile.as_view(),
                       name='soltoonwebsite_edit_profile'),
+                  url(r'^user/edit-soltoon/$', views.EditSoltoon.as_view(),
+                      name='soltoonwebsite_edit_soltoon'),
                   url(r'^user/signup/$', views.Signup.as_view(),
                       name='soltoonwebsite_signup'),
                   url(r'^user/activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',

@@ -318,4 +318,23 @@ input {
 #signup {
   padding: 72px 0; }
 
+.thumbnail {
+  width: 90px;
+  cursor: pointer;
+  background: #fafafa !important;
+  transition: 500ms border;
+  border-width: 2px !important; }
+  .thumbnail img {
+    width: 100%; }
+  .thumbnail:hover {
+    border-color: #777 !important; }
+  .thumbnail.selected {
+    border-color: #0088cc !important; }
+
+ul.thumbnails.image_picker_selector {
+  display: flex;
+  justify-content: flex-start; }
+  ul.thumbnails.image_picker_selector li {
+    margin: 0 0 0 6px !important; }
+
 /*# sourceMappingURL=style.css.map */

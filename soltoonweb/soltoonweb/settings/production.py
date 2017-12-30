@@ -12,6 +12,20 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
 DEFAULT_FROM_EMAIL = 'Soltoon <net@soltoon.net>'
 
+INSTALLED_APPS = INSTALLED_APPS + [
+    'opbeat.contrib.django',
+]
+
+OPBEAT = {
+    'ORGANIZATION_ID': '7fbb8834f86243438483759a7a293cec',
+    'APP_ID': '6787f6306e',
+    'SECRET_TOKEN': '2b5cb5e6452ca38f9746e5e263480dbcf6618f82',
+}
+
+MIDDLEWARE = MIDDLEWARE + [
+    'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
+]
+
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 

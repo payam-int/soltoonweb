@@ -26,8 +26,6 @@ SECRET_KEY = '@oz9&@38hq$n@_jg1nsfr&#1**14g_d@=$+(+60g3l@%e_#k#_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-LOGIN_REDIRECT_URL = '/'
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,9 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'semanticuiforms',
-    'modelcluster',
-    'taggit',
     'django_jalali',
     'lineage',
     'sandbox',
@@ -56,8 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'website.middlewares.force_language_middleware',
-]
+    'website.middlewares.force_language_middleware']
 
 ROOT_URLCONF = 'soltoonweb.urls'
 
@@ -78,7 +74,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'soltoonweb.wsgi.application'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -101,11 +96,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 LANGUAGES = [
-    ('fa_IR', _('Persian')),
-    ('en', _('English')),
+    ('fa-ir', _('Persian')),
+    ('en-us', _('English')),
 ]
 
-LANGUAGE_CODE = 'fa_IR'
+LANGUAGE_CODE = 'fa-ir'
 
 TIME_ZONE = 'Asia/Tehran'
 
@@ -123,5 +118,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MAX_CODE_SIZE = 1024 * 1024 * 10
 
+LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/user/login/'
+LOGOUT_REDIRECT_URL = '/'
 
+SITE_ID = 1
+
+ADMINS = [
+    ('Payam', 'payam@gmail.com')
+]
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 26214400

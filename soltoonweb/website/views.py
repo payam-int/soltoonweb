@@ -22,8 +22,9 @@ from django.views.generic import TemplateView, FormView, UpdateView
 from formtools.wizard.views import SessionWizardView
 from requests import post
 
-from sandbox.models import Code, TrainingScenario, TrainingScenarioCode, UserProfile
-from website.forms import EditProfileForm, SoltoonForm, UploadCodeForm, UploadScenraioCodeForm, SignupForm
+from sandbox.models import Code, TrainingScenario, TrainingScenarioCode, UserProfile, Soltoon
+from website.forms import EditProfileForm, SoltoonForm, UploadCodeForm, UploadScenraioCodeForm, SignupForm, \
+    EditSoltoonForm
 from website.tokens import account_activation_token
 
 
@@ -54,6 +55,7 @@ class Logout(View):
         return HttpResponseRedirect(reverse('soltoonwebsite_home'))
 
 
+@method_decorator(login_required, 'dispatch')
 class EditProfile(FormView):
     template_name = 'website/user_edit.html'
     form_class = EditProfileForm
@@ -78,6 +80,30 @@ class EditProfile(FormView):
 
 
 @method_decorator(login_required, 'dispatch')
+class EditSoltoon(FormView):
+    template_name = 'website/soltoon_edit.html'
+    form_class = EditSoltoonForm
+    success_url = reverse_lazy('soltoonwebsite_game')
+
+    def get_form_kwargs(self):
+        args = super().get_form_kwargs()
+
+        i = Soltoon.objects.filter(user=self.request.user.id)
+
+        if i.count() > 0:
+            args['instance'] = i.get()
+
+        return args
+
+    def form_valid(self, form):
+        soltoon = form.save(commit=False)
+        soltoon.user = self.request.user
+        soltoon.save()
+
+        return super(EditSoltoon, self).form_valid(form)
+
+
+@method_decorator(login_required, 'dispatch')
 class TrainingScenarios(TemplateView):
     template_name = 'website/training_scenarios.html'
 
@@ -93,6 +119,7 @@ class TrainingScenarios(TemplateView):
         return c
 
 
+@method_decorator(login_required, 'dispatch')
 class Game(TemplateView):
     template_name = 'website/game.html'
 
@@ -138,6 +165,7 @@ class RegisterGame(SessionWizardView):
         return super().dispatch(request, *args, **kwargs)
 
 
+@method_decorator(login_required, 'dispatch')
 class TrainingScenariosSubmittions(TemplateView):
     template_name = 'website/training_scenario_table.html'
 
@@ -184,8 +212,9 @@ class Signup(FormView):
 
     def form_valid(self, form):
         user = form.save(commit=False)
-        user.is_active = False
+        # user.is_active = False
         user.save()
+        login(self.request, user=user)
         self.send_activate_mail(user, form)
         return super(Signup, self).form_valid(form)
 

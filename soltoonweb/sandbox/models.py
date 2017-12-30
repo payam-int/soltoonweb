@@ -60,6 +60,9 @@ class TrainingScenarioCode(Code):
     training_scenario = models.ForeignKey(to='TrainingScenario', on_delete=models.CASCADE,
                                           related_name='all_submittions')
 
+    def __str__(self):
+        return _("{0} by {1}").format(str(self.training_scenario), str(self.user))
+
 
 class TrainingScenario(models.Model):
     name = models.CharField(verbose_name=_("name"), max_length=128)
@@ -163,7 +166,7 @@ class Achievement(models.Model):
 class UserProfile(models.Model):
     departments = (
         ("MCS", _("mathematical sciences")),
-        ("CE", _("computer engineering"))
+        # ("CE", _("computer engineering"))
     )
 
     default_avatar = static("sandbox/img/default-avatar.jpg")
@@ -178,6 +181,9 @@ class UserProfile(models.Model):
     enterance_year = models.IntegerField(verbose_name=_("enterance year"))
     avatar = models.ImageField(verbose_name=_("avatar"), upload_to='media/avatars/', null=False,
                                default=default_avatar)
+
+    def __str__(self):
+        return self.full_name()
 
     def full_name(self):
         return "{0} {1}".format(self.first_name, self.last_name)
@@ -213,20 +219,26 @@ class UserProfile(models.Model):
 
 class Soltoon(models.Model):
     UNIFORMS = {
-        0: '#ff00000',
-        1: '#00ff000'
+        0: '#011627',
+        1: '#81131d',
+        2: '#13817a',
+        3: '#530a3a',
+        4: '#212f05'
     }
 
     _uniforms = (
-        (0, UNIFORMS[0]),
-        (0, UNIFORMS[1]),
+        (0, '#011627'),
+        (1, '#81131d'),
+        (2, '#13817a'),
+        (3, '#530a3a'),
+        (4, '#212f05')
     )
 
     name = models.CharField(verbose_name=_("soltoon name"), max_length=30)
     achievements = models.ManyToManyField(Mission, related_name='achieved_users', through=Achievement)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='soltoon')
-    primary_uniform = models.IntegerField(choices=_uniforms)
-    secondary_uniform = models.IntegerField(choices=_uniforms)
+    primary_uniform = models.IntegerField(verbose_name=_("primary uniform"), choices=_uniforms)
+    secondary_uniform = models.IntegerField(verbose_name=_("secondary uniform"), choices=_uniforms)
     code = models.ForeignKey(to='Code', on_delete=models.SET_NULL, null=True)
 
 

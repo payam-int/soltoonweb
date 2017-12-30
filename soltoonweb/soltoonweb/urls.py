@@ -17,11 +17,9 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from website import urls as website_urls
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    # url(r'^cms/', include(wagtailadmin_urls)),
-    # url(r'^documents/', include(wagtaildocs_urls)),
-    # url(r'^blog/', include(wagtail_urls)),
     url(r'^', include(website_urls)),
 ]
 

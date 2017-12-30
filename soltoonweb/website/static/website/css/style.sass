@@ -343,6 +343,7 @@ input
     width: 50%
     box-sizing: border-box
     padding: 0 24px 0 24px
+
 .messages
   padding: 24px 0 48px 0
 
@@ -408,3 +409,22 @@ input
 //        margin-left: -170px
 //  #footer
 //    text-align: center
+
+.thumbnail
+  width: 90px
+  img
+    width: 100%
+  cursor: pointer
+  &:hover
+    border-color: #777 !important
+  background: #fafafa !important
+  transition: 500ms border
+  border-width: 2px !important
+  &.selected
+    border-color: #0088cc !important
+
+ul.thumbnails.image_picker_selector
+  display: flex
+  justify-content: flex-start
+  li
+    margin: 0 0 0 6px  !important

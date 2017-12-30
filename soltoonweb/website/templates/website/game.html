@@ -7,6 +7,7 @@
         <div class="container" id="page-game">
             <nav id="game-menu">
                 {% url 'soltoonwebsite_game_training' as soltoonwebsite_game_training %}
+                {% url 'soltoonwebsite_edit_soltoon' as soltoonwebsite_edit_soltoon %}
                 {% url 'soltoonwebsite_edit_profile' as soltoonwebsite_edit_profile %}
                 <div class="ui secondary menu">
                     <a class="item disabled">
@@ -19,7 +20,7 @@
                        href="{{ soltoonwebsite_game_training }}">
                         سناریو‌های آموزشی
                     </a>
-                    <a class="item disabled">
+                    <a class="item {% ancestor soltoonwebsite_edit_soltoon %}" href="{{ soltoonwebsite_edit_soltoon }}">
                         سلطون
                     </a>
                     <a class="item {% ancestor soltoonwebsite_edit_profile %}" href="{{ soltoonwebsite_edit_profile }}">
