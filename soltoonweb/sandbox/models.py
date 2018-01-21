@@ -55,13 +55,8 @@ class Code(models.Model):
                 return s[1]
         return 'Undefined'
 
-
-class TrainingScenarioCode(Code):
-    training_scenario = models.ForeignKey(to='TrainingScenario', on_delete=models.CASCADE,
-                                          related_name='all_submittions')
-
     def __str__(self):
-        return _("{0} by {1}").format(str(self.training_scenario), str(self.user))
+        return "{0} - {1}".format(self.user.username, self.created_at)
 
 
 class TrainingScenario(models.Model):
@@ -83,6 +78,14 @@ class TrainingScenario(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class TrainingScenarioCode(Code):
+    training_scenario = models.ForeignKey(to='TrainingScenario', on_delete=models.CASCADE,
+                                          related_name='all_submittions')
+
+    def __str__(self):
+        return _("{0} by {1}").format(str(self.training_scenario), str(self.user))
 
 
 class CodeError(models.Model):
@@ -116,10 +119,19 @@ class Competition(models.Model):
     )
 
     creator = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='competitions')
-    scheduled_for = models.DateTimeField()
+    scheduled_for = models.DateTimeField(auto_now=True)
     ready_at = models.DateTimeField(auto_now=True)
-    status = models.IntegerField(choices=competition_status)
+    status = models.IntegerField(choices=competition_status, default=0)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    competitors_code = models.ManyToManyField(to='Code', related_name='competition')
+
+
+class ExhibitionCompetition(Competition):
+    pass
+
+
+class CompetitionCode(Code):
+    pass
 
 
 class CompetitionError(models.Model):
@@ -139,7 +151,6 @@ class League(models.Model):
 
 
 class LeagueCompetition(Competition):
-    competitors = models.ManyToManyField(to=Code, related_name='competitions')
     league = models.ForeignKey(to=League, related_name='competitions')
 
 
@@ -153,7 +164,6 @@ class Mission(models.Model):
 
 
 class MissionCompetition(Competition):
-    competitor = models.ForeignKey(to=Code, on_delete=models.CASCADE, related_name='missions')
     mission = models.ForeignKey(to=Mission, on_delete=models.CASCADE, related_name='competitions')
 
 
@@ -239,7 +249,10 @@ class Soltoon(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='soltoon')
     primary_uniform = models.IntegerField(verbose_name=_("primary uniform"), choices=_uniforms)
     secondary_uniform = models.IntegerField(verbose_name=_("secondary uniform"), choices=_uniforms)
-    code = models.ForeignKey(to='Code', on_delete=models.SET_NULL, null=True)
+    code = models.ForeignKey(to='CompetitionCode', on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return "{0} ({1})".format(self.name, self.user.information.get().full_name())
 
 
 class CompetitionResult(models.Model):

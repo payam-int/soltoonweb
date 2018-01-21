@@ -1,9 +1,9 @@
 import zipfile
 
-from django.forms import ModelForm, FileField, forms, BooleanField, ImageField, FileInput, Select
+from django.forms import ModelForm, FileField, forms, BooleanField, ImageField, FileInput, Select, Form
 from django.db import models
 
-from sandbox.models import Soltoon, UserProfile, Code, TrainingScenarioCode
+from sandbox.models import Soltoon, UserProfile, Code, TrainingScenarioCode, CompetitionCode, ExhibitionCompetition
 from django.conf import settings
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
@@ -47,6 +47,15 @@ class SignupForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
 
+class EnterEmailForm(Form):
+    email = forms.EmailField(max_length=200, help_text='Required')
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and User.objects.filter(email=email).exists():
+            raise forms.ValidationError(u'Email address already exists on system.')
+
+
 class UploadCodeForm(ModelForm):
     def is_valid(self):
         if not (super(ModelForm, self).is_valid()):
@@ -62,7 +71,7 @@ class UploadCodeForm(ModelForm):
         return True
 
     class Meta:
-        model = Code
+        model = CompetitionCode
         exclude = ['user', 'created_at', 'status']
 
 
@@ -99,3 +108,7 @@ class EditSoltoonForm(ModelForm):
             ('Two Fields',
              ('Field', 'primary_uniform'), ('Field', 'secondary_uniform'))
         ]
+
+
+class ExhibitionCompetitionForm(Form):
+    opponent = forms.ModelChoiceField(queryset=Soltoon.objects.filter(code__isnull=False))

@@ -1,7 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordResetView, \
+    PasswordResetConfirmView, PasswordResetDoneView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.forms.models import model_to_dict
@@ -22,9 +23,10 @@ from django.views.generic import TemplateView, FormView, UpdateView
 from formtools.wizard.views import SessionWizardView
 from requests import post
 
-from sandbox.models import Code, TrainingScenario, TrainingScenarioCode, UserProfile, Soltoon
+from sandbox.models import Code, TrainingScenario, TrainingScenarioCode, UserProfile, Soltoon, CompetitionCode, \
+    ExhibitionCompetition, Competition
 from website.forms import EditProfileForm, SoltoonForm, UploadCodeForm, UploadScenraioCodeForm, SignupForm, \
-    EditSoltoonForm
+    EditSoltoonForm, ExhibitionCompetitionForm, EnterEmailForm
 from website.tokens import account_activation_token
 
 
@@ -120,24 +122,34 @@ class TrainingScenarios(TemplateView):
 
 
 @method_decorator(login_required, 'dispatch')
-class Game(TemplateView):
-    template_name = 'website/game.html'
+class Game(FormView):
+    template_name = 'website/competition.html'
+    form_class = ExhibitionCompetitionForm
+    success_url = reverse_lazy('soltoonwebsite_game')
 
     def get_context_data(self, **kwargs):
-        context = super(Game, self).get_context_data(**kwargs)
-        context['user'] = self.request.user
-        context['codes'] = Code.objects.filter(user=self.request.user).order_by('-created_at')[:10]
+        c = super().get_context_data(**kwargs)
+        c['competitions'] = Competition.objects.filter(competitors_code__user=self.request.user)
 
-        return context
+        return c
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        request_user = request.user
-        if not (request_user.information.exists()):
+        if not (request.user.information.exists()):
             return HttpResponseRedirect(reverse('soltoonwebsite_edit_profile'))
-        else:
-            return HttpResponseRedirect(reverse('soltoonwebsite_game_training'))
+
         return super(Game, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        opp_code = form.cleaned_data['opponent'].code
+        my_code = self.request.user.soltoon.get().code
+
+        e = ExhibitionCompetition(creator=self.request.user)
+        e.save()
+        e.competitors_code.add(my_code, opp_code)
+        e.save()
+
+        return super().form_valid(form)
 
 
 @method_decorator(login_required, 'dispatch')
@@ -205,6 +217,42 @@ class TrainingScenariosSendCode(FormView):
         return HttpResponseRedirect(reverse('soltoonwebsite_game_training_table', args=[current_scenario]))
 
 
+@method_decorator(login_required, 'dispatch')
+class CompetitionSendCode(FormView):
+    template_name = 'website/game_send_code.html'
+    form_class = UploadCodeForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            context['code'] = CompetitionCode.objects.filter(user=self.request.user).order_by('-created_at').first()
+        except Exception as e:
+            context['code'] = None
+
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        if not (request.user.soltoon):
+            messages.error(self.request, _('You should config your soltoon.'))
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        if context['code']:
+            context['code'].delete()
+
+        new_code = form.save(commit=False)
+        new_code.user = self.request.user
+        new_code.save()
+
+        soltoon = self.request.user.soltoon.get()
+        soltoon.code = new_code
+        soltoon.save()
+
+        return HttpResponseRedirect(reverse('soltoonwebsite_game_send_code'))
+
+
 class Signup(FormView):
     form_class = SignupForm
     template_name = 'website/signup.html'
@@ -213,6 +261,7 @@ class Signup(FormView):
     def form_valid(self, form):
         user = form.save(commit=False)
         # user.is_active = False
+        user.email = form.email
         user.save()
         login(self.request, user=user)
         self.send_activate_mail(user, form)
@@ -255,3 +304,28 @@ class ActivateUser(View):
             return HttpResponseRedirect(reverse('soltoonwebsite_home'))
 
         return HttpResponse("ERROR.")
+
+
+class PasswordReset(PasswordResetView):
+    template_name = 'website/password_reset.html'
+
+
+class PasswordResetConfirm(PasswordResetConfirmView):
+    template_name = 'website/password_reset_confirm.html'
+
+
+class PasswordResetDone(PasswordResetDoneView):
+    template_name = 'website/password_reset_done.html'
+
+
+@method_decorator(login_required, 'dispatch')
+class EnterEmail(FormView):
+    template_name = 'website/enter_email.html'
+    form_class = EnterEmailForm
+    success_url = reverse_lazy('soltoonwebsite_game')
+
+    def form_valid(self, form):
+        self.request.user.email = form.cleaned_data['email']
+        self.request.user.save()
+
+        return super().form_valid(form)

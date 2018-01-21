@@ -1,0 +1,53 @@
+{% extends 'website/game.html' %}
+{% load semanticui %}
+{% load jformat %}
+{% load competition %}
+{% block game-content %}
+    <div class="flexbox training-scenarios">
+        <div class="flexitem">
+            <form class="ui form" method="post" enctype="multipart/form-data">
+                <h3 class="ui header">رقابت جدید</h3>
+                {% render_form form %}
+                {% csrf_token %}
+                <button class="ui primary button">ارسال</button>
+            </form>
+        </div>
+    </div>
+    <br><br>
+    <div class="">
+        <h2 class="ui header">
+            <i class="game icon"></i>
+            <div class="content">
+رقابت‌های من
+            </div>
+        </h2>
+        <div class="ui divided items">
+            {% for c in competitions %}
+                {% get_opponent c.competitors_code.all request.user as opponent_code %}
+                <div class="item">
+                    <a class="ui tiny image">
+                        <img src="/{{ opponent_code.user.information.get.avatar.url }}">
+                    </a>
+                    <div class="content">
+                        <a class="header">
+
+                            {{ opponent_code.user.soltoon.get.name }}</a>
+                        <div class="ui red horizontal label">Fruit</div>
+                        <div class="meta">
+                            <span>{{ opponent_code.user.information.get.full_name }}</span>
+                        </div>
+                        <div class="description">
+                            {{ c.created_at | jformat:"%d %B %y - %H:%M:%S" }}</div>
+                        <div class="extra">
+                            <div class="ui right floated primary button">
+                                دیدن بازی
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

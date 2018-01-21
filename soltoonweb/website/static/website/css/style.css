@@ -8,7 +8,11 @@ body {
   font: 12pt "Samim", Arial; }
 
 a {
-  text-decoration: none; }
+  text-decoration: none;
+  color: #666;
+  transition: 300ms; }
+  a:hover {
+    color: #222; }
 
 .container {
   width: 1140px;
@@ -336,5 +340,11 @@ ul.thumbnails.image_picker_selector {
   justify-content: flex-start; }
   ul.thumbnails.image_picker_selector li {
     margin: 0 0 0 6px !important; }
+
+#page-content > .container {
+  padding: 24px 0 48px 0; }
+  #page-content > .container .middle {
+    width: 480px;
+    margin: 0 auto; }
 
 /*# sourceMappingURL=style.css.map */
