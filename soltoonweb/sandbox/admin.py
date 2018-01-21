@@ -11,7 +11,7 @@ admin.site.register(TrainingScenarioCode)
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    search_fields = ('first_name', 'last_name', 'student_id', 'ssn', 'user')
+    search_fields = ('first_name', 'last_name', 'student_id', 'ssn')
 
 
 admin.site.register(UserProfile, admin_class=UserProfileAdmin)
