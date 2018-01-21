@@ -8,6 +8,12 @@ from website.views import CompetitionSendCode
 
 admin.site.register(TrainingScenario)
 admin.site.register(TrainingScenarioCode)
-admin.site.register(UserProfile)
+
+
+class UserProfileAdmin(admin.ModelAdmin):
+    search_fields = ('first_name', 'last_name', 'student_id', 'ssn', 'user')
+
+
+admin.site.register(UserProfile, admin_class=UserProfileAdmin)
 admin.site.register(Soltoon)
 admin.site.register(CompetitionCode)

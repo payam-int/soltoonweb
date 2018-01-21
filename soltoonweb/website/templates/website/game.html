@@ -12,16 +12,16 @@
                 {% url 'soltoonwebsite_edit_profile' as soltoonwebsite_edit_profile %}
                 {% url 'soltoonwebsite_game_send_code' as soltoonwebsite_game_send_code %}
                 <div class="ui secondary menu">
-                    {#                    <a class="item {% ancestor soltoonwebsite_game %}" href="{{ soltoonwebsite_game }}">#}
-                    <a class="item">
+                    <a class="item {% ancestor soltoonwebsite_game %}" href="{{ soltoonwebsite_game }}">
+                        {#                    <a class="item">#}
                         رقابت‌های من
                     </a>
                     {#                    <a class="item {% ancestor soltoonwebsite_game_send_code %}"#}
                     {#                       href="{{ soltoonwebsite_game_send_code }}">#}
 
-                    <a class="item">
+                    <a class="item disabled">
 
-                        ارسال کد
+                        ارسال کد رقابت
                     </a>
                     <a class="item {% ancestor soltoonwebsite_game_training %}"
                        href="{{ soltoonwebsite_game_training }}">
