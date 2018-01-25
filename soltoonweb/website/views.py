@@ -261,7 +261,7 @@ class Signup(FormView):
     def form_valid(self, form):
         user = form.save(commit=False)
         # user.is_active = False
-        user.email = form.email
+        user.email = form.cleaned_data['email']
         user.save()
         login(self.request, user=user)
         self.send_activate_mail(user, form)
@@ -311,6 +311,7 @@ class PasswordReset(PasswordResetView):
 
 
 class PasswordResetConfirm(PasswordResetConfirmView):
+    success_url = reverse_lazy('soltoonwebsite_home')
     template_name = 'website/password_reset_confirm.html'
 
 
