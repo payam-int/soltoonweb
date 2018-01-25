@@ -34,17 +34,18 @@ class EditProfileForm(ModelForm):
 
 
 class SignupForm(UserCreationForm):
-    email = forms.EmailField(max_length=200, help_text='Required')
+    email = forms.EmailField(max_length=200, help_text='Required', required=True)
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
-        username = self.cleaned_data.get('username')
+        email = self.cleaned_data['email']
+        username = self.cleaned_data['username']
         if email and User.objects.filter(email=email).exclude(username=username).exists():
             raise forms.ValidationError(u'Email addresses must be unique.')
+        return email
 
-    class Meta:
+    class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = UserCreationForm.Meta.fields + ('email',)
 
 
 class EnterEmailForm(Form):
